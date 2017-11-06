@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    
+    <!-- 读入配置属性文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="false" /> 
+        <property name="ignoreUnresolvablePlaceholders" value="true" />  
+        
+        <property name="locations">
+            <list>
+                <!-- conf 目录下的配置文件  -->
+                <value>file:conf/*.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <dubbo:provider>
+         <dubbo:parameter key="shutdown.timeout" value="10000" /> <!-- 单位毫秒 -->
+    </dubbo:provider>
+    
+    <!-- owner应用或者服务的负责人 -->
+    <dubbo:application name="provider-service" owner=""/>
+    
+    <!--
+        描述注册中心信息的标记，如果有多个注册中心就写多个注册节点。 
+        建议将internal, external 配置放到公共配置文件中
+         对于多个不同注册中心 定义多了个不同的 dubbo:registry
+         部署服务时候dubbo:service节点通过registry 属性指定该服务注册到那个注册中心去。
+    -->
+    
+    <dubbo:registry id="external" protocol="zookeeper" address="112.74.63.132:2181" />
+    
+    <!--  大文件传输，协议选择rmi -->
+    <dubbo:protocol name="rmi" port="1099" accesslog="log/access.log" /> 
+    <!-- 配置dobb协议 在20880端口监听 ；重复单元测试会出现端口被占用不能绑定的问题。-->
+    <dubbo:protocol name="dubbo" port="20880" accesslog="true">
+        <dubbo:parameter key="shutdown.timeout" value="10000" /> <!-- 单位毫秒 -->
+    </dubbo:protocol>
+    
+    <bean id="helloService" class="org.provider.service.SayServiceImpl" />
+    
+    <!-- 
+                当consumer发现所有服务不可用时，mock的使用场景
+     <provider delay="-1" /> 当spring容器有依赖，需要
+     <protocol/service/reference timeout="1000"  默认1000ms, 复杂/阻塞时间比较长的服务可以加大 
+     mock="org.luisyang.dubbo.api.HelloServiceMock"
+            声明  服务提供方提供的服务
+     -->
+    <dubbo:service interface="org.service.api.Say" ref="helloService" protocol="dubbo" 
+    registry="external" timeout="10000" delay="-1"   />
+    <!-- internal暴露给内部的，external是暴露给外部的（比如网银） -->
+    <!-- <dubbo:service interface="com.alibaba.dubbo.demo.DemoService" ref="demoService" protocol="rmi" registry="internal" /> -->
+    
+</beans>
