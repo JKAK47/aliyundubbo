@@ -29,3 +29,4 @@ target/*
 /*/.settings/*
 /logs/*
 logs/*
+*.iml

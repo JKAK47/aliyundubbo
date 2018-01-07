@@ -20,9 +20,13 @@
     <dependency>
       <groupId>org.vincent.aliyun</groupId>
       <artifactId>service-api</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
-   
+      <dependency>
+          <groupId>org.javassist</groupId>
+          <artifactId>javassist</artifactId>
+          <version>3.18.1-GA</version>
+      </dependency>
     <!-- COMMON BEGIN -->
     <dependency>
       <groupId>junit</groupId>
@@ -74,11 +78,11 @@
             <version>2.5.4</version>
             <!-- <version>2.5.3</version> -->
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>3.3.3</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
@@ -89,8 +93,14 @@
             <artifactId>netty</artifactId>
             <version>3.2.5.Final</version>
         </dependency>
+      <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty</artifactId>
+          <version>3.5.7.Final</version>
+      </dependency>
     <!-- DUBBO STOP -->
-        
+      <!-- Spring start-->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
@@ -127,5 +137,6 @@
             <version>${org.springframework.version}</version>
             <scope>test</scope>
         </dependency>
+      <!-- Spring start-->
   </dependencies>
 </project>

@@ -12,7 +12,6 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="ignoreResourceNotFound" value="false" /> 
         <property name="ignoreUnresolvablePlaceholders" value="true" />  
-        
         <property name="locations">
             <list>
                 <!-- conf 目录下的配置文件  -->
@@ -20,7 +19,7 @@
             </list>
         </property>
     </bean>
-    
+    <!-- 配置提供者信息 -->
     <dubbo:provider>
          <dubbo:parameter key="shutdown.timeout" value="10000" /> <!-- 单位毫秒 -->
     </dubbo:provider>
@@ -55,7 +54,7 @@
      -->
     <dubbo:service interface="org.service.api.Say" ref="helloService" protocol="dubbo" 
     registry="external" timeout="10000" delay="-1"   />
-    <!-- internal暴露给内部的，external是暴露给外部的（比如网银） -->
+    <!-- internal 暴露给内部的，external 是暴露给外部的（比如网银） -->
     <!-- <dubbo:service interface="com.alibaba.dubbo.demo.DemoService" ref="demoService" protocol="rmi" registry="internal" /> -->
     
 </beans>
